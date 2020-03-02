@@ -1,0 +1,44 @@
+{
+  "name": "openhim-mediator-plm",
+  "version": "1.0.0",
+  "description": "OpenHIM Mediator for running PLM imports",
+  "author": "Maurya",
+  "homepage": "https://github.com/maurya/openhim-mediator-plm",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/maurya/openhim-mediator-plm.git"
+  },
+  "bugs": {
+    "url": "https://github.com/maurya/openhim-mediator-plm/issues"
+  },
+  "scripts": {
+    "start": "node --harmony src/",
+    "test": "mocha",
+    "test:lint": "standard src/**/*.js"
+  },
+  "bin": {
+    "openhim-mediator-plm": "./bin/openhim-mediator-plm.js"
+  },
+  "main": "src/index.js",
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "express": "^4.13.4",
+    "moment": "^2.11.2",
+    "openhim-mediator-utils": "^0.2.2",
+    "request": "^2.65.0",
+    "source-map-support": "^0.4.0",
+    "stdio": "^0.2.7",
+    "winston": "^2.2.0"
+  },
+  "devDependencies": {
+    "mocha": "^4.0.1",
+    "should": "^8.2.2",
+    "standard": "^10.0.3"
+  },
+  "keywords": [
+    "openhim",
+    "mediator",
+    "bash"
+  ],
+  "license": "MPL-2.0"
+}
