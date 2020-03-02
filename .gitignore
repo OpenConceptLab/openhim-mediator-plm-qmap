@@ -1,2 +1,8 @@
 lib/
 node_modules/
+scripts/tests/redis/bin/
+.idea/
+*.pyc
+package-lock.json
+config/
+.DS_Store
