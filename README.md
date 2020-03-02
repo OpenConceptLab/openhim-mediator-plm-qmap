@@ -2,32 +2,6 @@
 # openhim-mediator-PLM
 OpenHIM Mediator for executing plm import and export scripts.
 
-## Usage
-Install via npm
-```
-npm install -g openhim-mediator-plm
-```
-(note this will need root/sudo permission)
-
-Create an appropriate location for you scripts (only scripts in this location will be allowed to be executed)
-```
-mkdir /opt/ocl-datim
-```
-Next get a copy of the default config and place it in an appropriate location, e.g.
-```
-mkdir /etc/openhim
-wget https://raw.githubusercontent.com/maurya/openhim-mediator-plm/master/config/default.json
-mv default.json /etc/openhim/mediator-plm.json
-```
-Edit the values in this config according to your setup.
-
-Run the mediator:
-```
-openhim-mediator-plm --conf /etc/openhim/mediator-plm.json
-```
-
-Now you can setup your HIM channels and the mediator config via the console.
-
 ## Polling Channel Example
 Say we have a maintenance script `task.sh` that needs to execute on a daily basis. Copy the script into the mediator scripts directory and give it execute permission:
 ```
