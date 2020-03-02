@@ -1,5 +1,5 @@
 
-# openhim-mediator-PLM
+# openhim-mediator-PLM-QMAP
 OpenHIM Mediator for executing plm import and export scripts.
 
 ## Polling Channel Example
@@ -10,7 +10,7 @@ chmod +x /opt/ocl-datim/task.sh
 ```
 Note that the mediator *process* needs execute permission for the script.
 
-With the script in place we can setup the channel and mediator in console. Go to *Mediators* and click on the *OpenHIM PLM Mediator* item. From there click on the blue *Configure Mediator* button.
+With the script in place we can setup the channel and mediator in console. Go to *Mediators* and click on the *OpenHIM PLM QMAP Mediator* item. From there click on the blue *Configure Mediator* button.
 
 Add a new script and give it an endpoint on which to trigger execution. Enter the name of the script `task.sh`. Any required arguments or environment variables can be added as well.
 ![screen shot 2016-03-10 at 09 12 34](https://cloud.githubusercontent.com/assets/1872071/13662056/4ab49908-e6a0-11e5-90d3-bb10298bf95b.png)
@@ -30,7 +30,7 @@ Click on *Save Changes* and then that's it. The polling channel will now execute
 ## Development
 Checkout from GitHub
 ```
-git clone https://github.com/maurya/openhim-mediator-plm.git
+git clone https://github.com/maurya/openhim-mediator-plm-qmap.git
 npm install
 ```
 To run the mediator in development mode

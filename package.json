@@ -1,15 +1,15 @@
 {
-  "name": "openhim-mediator-plm",
+  "name": "openhim-mediator-plm-qmap",
   "version": "1.0.0",
-  "description": "OpenHIM Mediator for running PLM imports",
+  "description": "OpenHIM Mediator for running PLM QMAP imports",
   "author": "Maurya",
   "homepage": "https://github.com/maurya/openhim-mediator-plm",
   "repository": {
     "type": "git",
-    "url": "git://github.com/maurya/openhim-mediator-plm.git"
+    "url": "git://github.com/maurya/openhim-mediator-plm-qmap.git"
   },
   "bugs": {
-    "url": "https://github.com/maurya/openhim-mediator-plm/issues"
+    "url": "https://github.com/maurya/openhim-mediator-plm-qmap/issues"
   },
   "scripts": {
     "start": "node --harmony src/",
@@ -17,7 +17,7 @@
     "test:lint": "standard src/**/*.js"
   },
   "bin": {
-    "openhim-mediator-plm": "./bin/openhim-mediator-plm.js"
+    "openhim-mediator-plm": "./bin/openhim-mediator-plm-qmap.js"
   },
   "main": "src/index.js",
   "dependencies": {

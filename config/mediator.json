@@ -1,11 +1,11 @@
 {
-  "urn": "urn:mediator:plm",
+  "urn": "urn:mediator:plm-qmap",
   "version": "1.0.0",
-  "name": "OpenHIM PLM Mediator",
-  "description": "OpenHIM Mediator for executing PML imports and exports",
+  "name": "OpenHIM PLM QMAP Mediator",
+  "description": "OpenHIM Mediator for executing PML QMAP imports and exports",
   "endpoints": [
     {
-      "name": "PLM Mediator",
+      "name": "PLM QMAP Mediator",
       "host": "localhost",
       "port": "5017",
       "type": "http"
