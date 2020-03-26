@@ -16,6 +16,8 @@ const cors = require('cors')
 const fs = require('fs')
 const path = require('path')
 const { spawn } = require('child_process')
+const util = require('util')
+const fileUpload = require('express-fileupload');
 
 const buildArgs = function (script) {
   const args = []
@@ -49,12 +51,35 @@ const setupEnv = function (script) {
 }
 
 const handler = script => function (req, res) {
+  logger.info(`[${req}`)
   const openhimTransactionID = req.headers['x-openhim-transactionid']
-
   const scriptCmd = path.join(config.getConf().scriptsDirectory, script.filename)
   const args = buildArgs(script)
+  logger.info(`[${req.params.domain}]`)
+  /*logger.info(`[${req.params.qmap}]`)
+  logger.info(`[${req.method}]`);*/
+  if (req.method == "GET") {
+    args.push(("--domain"));
+    args.push((req.params.domain));
+    args.push(("--qmapid"));
+    args.push((req.params.qmapid));
+  }
+  if (req.method == "POST") {
+    args.push(("--domain"));
+    args.push((req.params.domain));
+    const qmapImport = req.files.qmapImport
+    logger.info(`[${req.params.domain}] domain`)
+    qmapImport.mv('/opt/ocl_datim/data/qmapImport.json', function(err) {
+    if (err){
+      return res.status(500).send(err);
+    }
+    });
+    args.push(("/opt/ocl_datim/data/qmapImport.json"));
+};
+  
+  args.unshift(scriptCmd);
 
-  const cmd = spawn(scriptCmd, args, {env: setupEnv(script), shell: true})
+  const cmd = spawn('~/.local/share/virtualenvs/ocl_datim-viNFXhy9/bin/python', args);
   logger.info(`[${openhimTransactionID}] Executing ${scriptCmd} ${args.join(' ')}`)
 
   let out = ''
@@ -103,6 +128,7 @@ const startExpress = () =>
     app = express()
     
     app.use(cors())
+    app.use(fileUpload())
 
     app.use(bodyParser.json())
 
@@ -110,7 +136,7 @@ const startExpress = () =>
       for (let script of Array.from(config.getConf().scripts)) {
         (function (script) {
           if (isScriptNameValid(script.filename) && Array.from(scriptNames).includes(script.filename)) {
-            app.get(script.endpoint, handler(script))
+            app.all(script.endpoint, handler(script))
             return logger.info(`Initialized endpoint '${script.endpoint}' for script '${script.filename}'`)
           } else {
             logger.warn(`Invalid script name specified '${script.filename}'`)
