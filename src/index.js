@@ -15,7 +15,7 @@ const mediatorUtils = require('openhim-mediator-utils')
 const cors = require('cors')
 const fs = require('fs')
 const path = require('path')
-const { spawn } = require('child_process')
+const spawn = require('child_process').spawn;
 const util = require('util')
 const fileUpload = require('express-fileupload');
 
@@ -51,12 +51,12 @@ const setupEnv = function (script) {
 }
 
 const handler = script => function (req, res) {
-  logger.info(`[${req}`)
+  /*logger.info(`[${req}`)*/
   const openhimTransactionID = req.headers['x-openhim-transactionid']
   const scriptCmd = path.join(config.getConf().scriptsDirectory, script.filename)
   const args = buildArgs(script)
-  logger.info(`[${req.params.domain}]`)
-  /*logger.info(`[${req.params.qmap}]`)
+  /*logger.info(`[${req.params.domain}]`)
+  logger.info(`[${req.params.qmap}]`)
   logger.info(`[${req.method}]`);*/
   if (req.method == "GET") {
     args.push(("--domain"));
@@ -79,7 +79,7 @@ const handler = script => function (req, res) {
   
   args.unshift(scriptCmd);
 
-  const cmd = spawn('~/.local/share/virtualenvs/ocl_datim-viNFXhy9/bin/python', args);
+  const cmd = spawn('/home/openhim-core/.local/share/virtualenvs/ocl_datim-viNFXhy9/bin/python',args);
   logger.info(`[${openhimTransactionID}] Executing ${scriptCmd} ${args.join(' ')}`)
 
   let out = ''
