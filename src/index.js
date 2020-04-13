@@ -1,9 +1,9 @@
 /*
- * decaffeinate suggestions:
- * DS101: Remove unnecessary use of Array.from
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
+ *  * decaffeinate suggestions:
+ *   * DS101: Remove unnecessary use of Array.from
+ *    * DS102: Remove unnecessary code created because of implicit returns
+ *     * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ *      */
 require('./init')
 
 const logger = require('winston')
@@ -56,13 +56,19 @@ const handler = script => function (req, res) {
   const scriptCmd = path.join(config.getConf().scriptsDirectory, script.filename)
   const args = buildArgs(script)
   /*logger.info(`[${req.params.domain}]`)
-  logger.info(`[${req.params.qmap}]`)
-  logger.info(`[${req.method}]`);*/
+ *   logger.info(`[${req.params.qmap}]`)
+ *     logger.info(`[${req.method}]`);*/
   if (req.method == "GET") {
-    args.push(("--domain"));
-    args.push((req.params.domain));
-    args.push(("--qmapid"));
-    args.push((req.params.qmapid));
+    if (req.path.includes("/plm-qmap/")){
+      args.push(("--domain"));
+      args.push((req.params.domain));
+      args.push(("--qmapid"));
+      args.push((req.params.qmapid));
+    }
+    else if (req.path.includes("/plm-qmap-import-status/")){
+      args.push(("--bulkImportId"));
+      args.push((req.params.importid));
+    }   
   }
   if (req.method == "POST") {
     args.push(("--domain"));
