@@ -1,9 +1,3 @@
-/*
- *  * decaffeinate suggestions:
- *   * DS101: Remove unnecessary use of Array.from
- *    * DS102: Remove unnecessary code created because of implicit returns
- *     * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- *      */
 require('./init')
 
 const logger = require('winston')
@@ -51,13 +45,9 @@ const setupEnv = function (script) {
 }
 
 const handler = script => function (req, res) {
-  /*logger.info(`[${req}`)*/
   const openhimTransactionID = req.headers['x-openhim-transactionid']
   const scriptCmd = path.join(config.getConf().scriptsDirectory, script.filename)
   const args = buildArgs(script)
-  /*logger.info(`[${req.params.domain}]`)
- *   logger.info(`[${req.params.qmap}]`)
- *     logger.info(`[${req.method}]`);*/
   if (req.method == "GET") {
     if (req.path.includes("/plm-qmap/")){
       args.push(("--domain"));
@@ -73,15 +63,15 @@ const handler = script => function (req, res) {
   if (req.method == "POST") {
     args.push(("--domain"));
     args.push((req.params.domain));
-    const qmapImport = req.files.qmapImport
-    logger.info(`[${req.params.domain}] domain`)
-    qmapImport.mv('/opt/ocl_datim/data/qmapImport.json', function(err) {
-    if (err){
-      return res.status(500).send(err);
-    }
-    });
+    logger.info(`[${req.body}]`)
+    const qmapImport = JSON.stringify(req.body)
+    fs.writeFile('/opt/ocl_datim/data/qmapImport.json', qmapImport, (err) => {
+    if (err) throw err;
+
+    console.log('qmap Request body saved');
+  });
     args.push(("/opt/ocl_datim/data/qmapImport.json"));
-};
+  };
   
   args.unshift(scriptCmd);
 
