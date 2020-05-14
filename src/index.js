@@ -49,16 +49,16 @@ const handler = script => function (req, res) {
   const scriptCmd = path.join(config.getConf().scriptsDirectory, script.filename)
   const args = buildArgs(script)
   if (req.method == "GET") {
-    if (req.path.includes("/plm-qmap/")){
+    if (req.query.importId){
+      args.push(("--bulkImportId"));
+      args.push((req.query.importId));
+    }
+    else {
       args.push(("--domain"));
       args.push((req.params.domain));
       args.push(("--qmapid"));
       args.push((req.params.qmapid));
     }
-    else if (req.path.includes("/plm-qmap-import-status/")){
-      args.push(("--bulkImportId"));
-      args.push((req.params.importid));
-    }   
   }
   if (req.method == "POST") {
     args.push(("--domain"));
@@ -132,7 +132,12 @@ const startExpress = () =>
       for (let script of Array.from(config.getConf().scripts)) {
         (function (script) {
           if (isScriptNameValid(script.filename) && Array.from(scriptNames).includes(script.filename)) {
-            app.all(script.endpoint, handler(script))
+            if(script.method==="GET"){
+              app.get(script.endpoint, handler(script))
+            }
+            if(script.method==="POST"){
+              app.post(script.endpoint, handler(script))
+            }
             return logger.info(`Initialized endpoint '${script.endpoint}' for script '${script.filename}'`)
           } else {
             logger.warn(`Invalid script name specified '${script.filename}'`)
