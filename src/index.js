@@ -45,34 +45,58 @@ const setupEnv = function (script) {
 }
 
 const handler = script => function (req, res) {
+  let format, contenttype = 'application/json';
   const openhimTransactionID = req.headers['x-openhim-transactionid']
   const scriptCmd = path.join(config.getConf().scriptsDirectory, script.filename)
   const args = buildArgs(script)
-  if (req.method == "GET") {
-    if (req.query.importId){
-      args.push(("--bulkImportId"));
-      args.push((req.query.importId));
-    }
-    else {
-      args.push(("--domain"));
-      args.push((req.params.domain));
-      args.push(("--qmapid"));
-      args.push((req.params.qmapid));
-    }
+  if (req.params.importId){
+    args.push(("--bulkImportId"));
+    args.push((req.params.importId));
   }
-  if (req.method == "POST") {
+  if (req.params.qmapid) {
+    args.push(("--qmapid"));
+    args.push((req.params.qmapid));
+  }
+  if (req.params.domain) {
     args.push(("--domain"));
     args.push((req.params.domain));
+  }
+  /*if (req.query.format){
+    format = req.query.format.toLowerCase();
+  }
+  else {
+    format="csv";
+  }
+  if (req.method == "GET") {
+    if (format === 'csv') {
+      contenttype = 'application/csv';
+    }
+    else if (format === 'html') {
+      contenttype = 'text/html';
+    }
+    else if (format === 'xml') {
+      contenttype = 'application/xml';
+    }
+    else {
+      format = "json";
+      contenttype = 'application/json';
+    }
+    args.push(("--format"));
+    args.push((format));
+  }*/
+  if (req.method == "POST") {
     logger.info(`[${req.body}]`)
     const qmapImport = JSON.stringify(req.body)
     fs.writeFile('/opt/ocl_datim/data/qmapImport.json', qmapImport, (err) => {
     if (err) throw err;
 
     console.log('qmap Request body saved');
+    /*contenttype='application/json';*/
   });
     args.push(("/opt/ocl_datim/data/qmapImport.json"));
   };
-  
+
+
   args.unshift(scriptCmd);
 
   const cmd = spawn('/home/openhim-core/.local/share/virtualenvs/ocl_datim-viNFXhy9/bin/python',args);
@@ -85,7 +109,14 @@ const handler = script => function (req, res) {
   }
   cmd.stdout.on('data', appendToOut)
   cmd.stderr.on('data', appendToOut)
-
+if (req.method == "GET") {
+  return cmd.on('close', function(code) {
+    logger.info(`[${openhimTransactionID}] Script exited with status ${code}`);
+    res.set('Content-Type', contenttype);
+    return res.send(out);
+  });
+}
+if (req.method == "POST") {
   return cmd.on('close', function (code) {
     logger.info(`[${openhimTransactionID}] Script exited with status ${code}`)
 
@@ -103,6 +134,7 @@ const handler = script => function (req, res) {
       }
     })
   })
+}
 }
 
 let app = null
@@ -122,7 +154,7 @@ const startExpress = () =>
     logger.info(`Available scripts: ${(scriptNames.filter(d => !d.startsWith('.'))).join(', ')}`)
 
     app = express()
-    
+
     app.use(cors())
     app.use(fileUpload())
 
