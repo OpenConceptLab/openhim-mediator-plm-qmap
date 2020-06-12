@@ -61,13 +61,22 @@ const handler = script => function (req, res) {
     args.push(("--domain"));
     args.push((req.params.domain));
   }
-  /*if (req.query.format){
-    format = req.query.format.toLowerCase();
-  }
-  else {
-    format="csv";
-  }
+  /*if (req.path === '/datim-imap-status') {
+    if (req.query.format){
+      format = req.query.format.toLowerCase();
+    }
+    else {
+      format="text";
+    }
+  }*/
+
   if (req.method == "GET") {
+    if (req.query.format){
+      format = req.query.format.toLowerCase();
+    }
+    else {
+      format="json";
+    }
     if (format === 'csv') {
       contenttype = 'application/csv';
     }
@@ -81,9 +90,12 @@ const handler = script => function (req, res) {
       format = "json";
       contenttype = 'application/json';
     }
+    /*Export Qmap Script does not support format*/
+    if (script.filename != 'exportqmap.py'){
     args.push(("--format"));
     args.push((format));
-  }*/
+  }
+  }
   if (req.method == "POST") {
     logger.info(`[${req.body}]`)
     const qmapImport = JSON.stringify(req.body)
