@@ -125,8 +125,23 @@ if (req.method == "GET") {
   return cmd.on('close', function(code) {
     logger.info(`[${openhimTransactionID}] Script exited with status ${code}`);
     res.set('Content-Type', contenttype);
-    return res.send(out);
-  });
+    res.set('Access-Control-Allow-Origin', '*');
+    if (code===0){
+      status=200
+    }
+    else{
+      status=500
+    }
+    if (req.params.importId){
+      console.log(out);
+      out=out.replace(/'/g, '"')
+      console.log(out);
+      var output_check=JSON.parse(out);
+      /*console.log(output_check.status_code);*/
+      status=output_check.status_code;
+    }
+    return res.status(status).send(out);
+  })
 }
 if (req.method == "POST") {
   return cmd.on('close', function (code) {
