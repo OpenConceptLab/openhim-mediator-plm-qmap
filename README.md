@@ -34,7 +34,7 @@ Group=openhim-core
   </p>
 
 5. Create a channel through which the mediator is accessed and use the following settings -
-
+<p align="center">
 <img src="images/channelConfig1.png" width="600" text-align="center" title="Channel Config">
   <img src="images/channelConfig2.png" width="600" text-align="center" title="Channel Config 2">
   <img src="images/channelConfig3.png" width="600" text-align="center" title="Channel Config 3">
