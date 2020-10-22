@@ -27,6 +27,9 @@ Group=openhim-core
 
 
 4. After successful installation, configure the mediator with the following settings - 
-
+![mediatorConfig1](images/mediatorConfig1.png)
+<p align="center">
+<img src="images/mediatorConfig1.png" width="600" text-align="center" title="Mediator Config">
+  </p>
 
 5. Create a channel through which the mediator is accessed and use the following settings -
