@@ -41,3 +41,5 @@ Group=openhim-core
    <img src="images/channelConfig4.png" width="600" text-align="center" title="Channel Config 3">
   </p>
 
+
+For more information on API endpoints, please read POSTMAN documentation - https://documenter.getpostman.com/view/10981858/SzmjyuQC?version=latest
