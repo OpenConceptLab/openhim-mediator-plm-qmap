@@ -148,19 +148,22 @@ if (req.method == "POST") {
     logger.info(`[${openhimTransactionID}] Script exited with status ${code}`)
 
     res.set('Access-Control-Allow-Origin', '*');
-    res.set('Content-Type', 'application/json+openhim')
-    return res.send({
-      'x-mediator-urn': config.getMediatorConf().urn,
-      status: code === 0 ? 'Successful' : 'Failed',
-      response: {
-        status: code === 0 ? 200 : 500,
-        headers: {
-          'content-type': 'application/json'
-        },
-        body: out,
-        timestamp: new Date()
+    res.set('Content-Type', 'application/json');
+    if (code===0){
+        status=200
+        out=out.replace(/'/g, '"')
+        var output_check=JSON.parse(out);
+        if (output_check.status==="Success"){
+          status=200
+        }
+        else{
+          status=500
+        }
       }
-    })
+      else{
+        status=500
+      }
+    return res.status(status).send(out);
   })
 }
 }
