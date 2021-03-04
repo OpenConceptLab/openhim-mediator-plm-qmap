@@ -121,11 +121,11 @@ const handler = script => function (req, res) {
   }
   cmd.stdout.on('data', appendToOut)
   cmd.stderr.on('data', appendToOut)
+  res.set('Access-Control-Allow-Origin', '*');
 if (req.method == "GET") {
   return cmd.on('close', function(code) {
     logger.info(`[${openhimTransactionID}] Script exited with status ${code}`);
     res.set('Content-Type', contenttype);
-    res.set('Access-Control-Allow-Origin', '*');
     if (code===0){
       status=200
     }
