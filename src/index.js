@@ -150,20 +150,18 @@ if (req.method == "POST") {
     res.set('Access-Control-Allow-Origin', '*');
     res.set('Content-Type', 'application/json');
     if (code===0){
-        status=200
-        out=out.replace(/'/g, '"')
-        var output_check=JSON.parse(out);
-        if (output_check.status==="Success"){
-          status=200
-        }
-        else{
-          status=500
-        }
-      }
-      else{
-        status=500
-      }
-    return res.status(status).send(out);
+      status_code=200
+    }
+    else{
+      status_code=500
+    }
+    var output_check=JSON.parse(out);
+    statusMessage=output_check.status;
+    if (statusMessage==="Error"){
+        status_code=400;
+    }
+    console.log(out);     
+    return res.status(status_code).send(out);
   })
 }
 }
