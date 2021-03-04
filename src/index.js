@@ -121,10 +121,10 @@ const handler = script => function (req, res) {
   }
   cmd.stdout.on('data', appendToOut)
   cmd.stderr.on('data', appendToOut)
-  res.set('Access-Control-Allow-Origin', '*');
 if (req.method == "GET") {
   return cmd.on('close', function(code) {
     logger.info(`[${openhimTransactionID}] Script exited with status ${code}`);
+    res.set('Access-Control-Allow-Origin', '*');
     res.set('Content-Type', contenttype);
     if (code===0){
       status=200
@@ -147,6 +147,7 @@ if (req.method == "POST") {
   return cmd.on('close', function (code) {
     logger.info(`[${openhimTransactionID}] Script exited with status ${code}`)
 
+    res.set('Access-Control-Allow-Origin', '*');
     res.set('Content-Type', 'application/json+openhim')
     return res.send({
       'x-mediator-urn': config.getMediatorConf().urn,
